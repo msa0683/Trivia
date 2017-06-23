@@ -9,6 +9,7 @@
 <body>
 
 <h1 class="title" >Finding Nemo Trivial Trivia!</h1>
+<div id="time-left"></div>
 
 <div class="container"></div>
 
@@ -19,8 +20,8 @@
 
 <script type="text/javascript">
 
-var wrongAnswer	
-var displayCorrectAnswer
+var wrongAnswerCount = 0;
+var correctAnswerCount = 0; 
 
 
 var questionAnswers = [ 
@@ -51,17 +52,31 @@ var questionAnswers = [
 ]
 
 var displayQuestions = function() {
-	 var question = $("<h2/>").html(questionAnswers[0].question);
-	 var possibleAnswers = questionAnswers[0].possibleAnswers
-	  var questionContainer = $("<div/>");
-	  questionContainer.addClass("question-con");
-	  questionContainer.append(question);
+	for (var i = 0; i < questionAnswers.length; i++) {
+	 	var question = $("<h2/>").html(questionAnswers[i].question);
+	 	var possibleAnswers = questionAnswers[i].possibleAnswers
+	 	var correctAnswer = questionAnswers[i].correctAnswer
+	  	var questionContainer = $("<div/>");
+	  	questionContainer.addClass("question-con");
+	  	questionContainer.append(question);
+	  	answers = displayAnswers(possibleAnswers, i, correctAnswer);
+	 	$(".container").append(questionContainer);
+	 	$(".container").append(answers);
+	}
 
-	 // <div class="question-con">
-	 	// <h2>question</h2>
-	 	// <div>possibleAnswers</div> 
-	 //</div>
-	 $(".container").html(questionContainer);
+}
+
+var displayAnswers = function(possibleAnswers, questionNumber, correctAnswer){
+	var answerContainer = $("<div/>");
+  	answerContainer.addClass("answer-con");
+  	for (var i = 0; i < possibleAnswers.length; i++) {
+  		var input = $("<input type='radio' name='" + questionNumber + "'/>")
+  		input.attr('data-correct-answer', correctAnswer === possibleAnswers[i])
+  		var label =($("<label for=" + questionNumber + ">" + possibleAnswers[i] + "</label>"))
+  		answerContainer.append(input);
+  		answerContainer.append(label);
+  	}
+  	return answerContainer;
 }
 
 var user = {
@@ -80,22 +95,28 @@ var start = function(){
 }
 
 var timesup = function() {
-
-	alert("Your Time is Up!");
-
 // The page will reveal the number of questions that players answer correctly and incorrectly.
- $("#time-left").append("<h2>Time's Up!</h2>");
-  console.log("time is up");
+	$("#time-left").append("<h2>Time's Up!</h2>");
+	allInputs = $("input:checked")
+	for (var i = 0; i < allInputs.length; i++) {
+		if (allInputs.attr('data-correct-answer') === "true") {
+			correctAnswerCount++
+		} else {
+			wrongAnswerCount++
+		}
+	}
+	var correct = $("<h2>").html("Correct " + correctAnswerCount)
+	var wrong = $("<h2>").html("Wrong " + wrongAnswerCount)
+	$("#time-left").append(correct);
+	$("#time-left").append(wrong);
 
 }
 
 var incrementTimer = function() {
 	timer++
+	$("#time-left").html("Elapsed Time: " + timer);
 	if(timer === 100){
          timesup();
-	}
-	else if(wrongAnswer) {
-		displayCorrectAnswer()
 	}
 }
 var reset = function() {
