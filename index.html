@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+<h1 class="title" >Finding Nemo Trivial Trivia!</h1>
+
+<div class="container"></div>
+
+<div>
+<button id="start">Start</button>
+</div>
+
+
+<script type="text/javascript">
+
+var wrongAnswer	
+var displayCorrectAnswer
+
+
+var questionAnswers = [ 
+	{
+		question: "How many eggs did Marlin and Coral have? ",    
+	 	correctAnswer: "400",
+	 	possibleAnswers:["400","10", "50","1000"]
+	},
+ 	{
+	 	question: "Dory refers to Nemo as all of the following names, except which one?",    
+	 	correctAnswer: "Meeko",
+	 	possibleAnswers:["Chico","Fabio", "Meeko","Elmo"]
+	},
+	{	question: "What are Dory and Marlin instructed to do when they come  to the trench?", 
+		correctAnswers: "Swim through it, not over it?",
+		possibleAnswers:["Swim over it, not through it", "Swim around it, not through it?", "Swim through it, not over it?", "Don't go near it"]
+	},
+	{
+	 	question: "What color is the rim of the scuba divers goggles?",    
+	 	correctAnswer: "Green",
+	 	possibleAnswers:["Yellow","Blue", "Green","Pink"]
+	 },
+	 {
+	 	question: "Where does P.Sherman live?",    
+	 	correctAnswer: "42 Wallaby Way, Sydney",
+	 	possibleAnswers:["23 Wallaby Way, Sydney","42 Wallaby Way, Sydney","32 Wallaby Way, Sydney", "22 Wallaby Way, Sydney"]
+	 }
+]
+
+var displayQuestions = function() {
+	 var question = $("<h2/>").html(questionAnswers[0].question);
+	 var possibleAnswers = questionAnswers[0].possibleAnswers
+	  var questionContainer = $("<div/>");
+	  questionContainer.addClass("question-con");
+	  questionContainer.append(question);
+
+	 // <div class="question-con">
+	 	// <h2>question</h2>
+	 	// <div>possibleAnswers</div> 
+	 //</div>
+	 $(".container").html(questionContainer);
+}
+
+var user = {
+	score: 0, 
+	correctAnswers: 0,
+	incorrectAnswers: 0,
+	skipedQuestions: 0 
+}
+var timer = 0;
+
+var start = function(){
+	var intervalId = setInterval(incrementTimer, 1000);
+	$("#start").on("click", function(){
+		displayQuestions();
+	});
+}
+
+var timesup = function() {
+
+	alert("Your Time is Up!");
+
+// The page will reveal the number of questions that players answer correctly and incorrectly.
+ $("#time-left").append("<h2>Time's Up!</h2>");
+  console.log("time is up");
+
+}
+
+var incrementTimer = function() {
+	timer++
+	if(timer === 100){
+         timesup();
+	}
+	else if(wrongAnswer) {
+		displayCorrectAnswer()
+	}
+}
+var reset = function() {
+	timer = 0;
+
+}
+
+start();
+
+</script>
+</body>
+</html></h5>
